@@ -89,7 +89,7 @@
     <div class="sidebar" id="sidebar">
         <!-- Brand/Logo -->
         <div class="sidebar-brand">
-            <i class="bi bi-shop"></i> Inventory System
+            <i class="bi bi-shop"></i> D Point of Sales System
         </div>
         
         <!-- Navigation Menu -->
