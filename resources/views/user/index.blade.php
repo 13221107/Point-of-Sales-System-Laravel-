@@ -34,77 +34,96 @@
     <a href="{{ url('/user/add') }}">Add New User</a>
 </body>
 </html> --}}
-
 @extends('layouts.master')
 
-@section('title', 'Delete User')
+@section('title', 'Users Management')
 
 @section('page-title')
-    <i class="bi bi-trash"></i> Delete User
+    <i class="bi bi-people"></i> Users Management
 @endsection
 
 @section('content')
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url('/user') }}">Users</a></li>
-                    <li class="breadcrumb-item active">Delete User</li>
-                </ol>
-            </nav>
+    <!-- Add Button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <p class="text-muted mb-0">Manage system users and access</p>
+        </div>
+        <a href="{{ url('/user/add') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New User
+        </a>
+    </div>
 
-            <!-- Delete Confirmation Card -->
-            <div class="card shadow border-danger">
-                <div class="card-header bg-danger text-white">
-                    <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Confirm Deletion</h4>
+    <!-- Users Table Card -->
+    <div class="card shadow">
+        <div class="card-header bg-white">
+            <h5 class="mb-0"><i class="bi bi-table"></i> Users List</h5>
+        </div>
+        <div class="card-body">
+            @if (empty($user_list) || count($user_list) == 0)
+                <div class="alert alert-info text-center" role="alert">
+                    <i class="bi bi-info-circle"></i> There are no users in the database yet.
+                    <br>
+                    <a href="{{ url('/user/add') }}" class="btn btn-primary mt-2">
+                        Add Your First User
+                    </a>
                 </div>
-                <div class="card-body text-center">
-                    <i class="bi bi-person-x text-danger" style="font-size: 4rem;"></i>
-                    <h5 class="mt-3">Are you sure you want to delete this user?</h5>
-                    
-                    <!-- User Details -->
-                    <div class="alert alert-light mt-4 text-start">
-                        <table class="table table-borderless mb-0">
+            @else
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
                             <tr>
-                                <th width="35%">Username:</th>
-                                <td><strong>{{ $user_entry[0]->username }}</strong></td>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Last Login</th>
+                                <th class="text-center">Actions</th>
                             </tr>
-                            <tr>
-                                <th>Email:</th>
-                                <td>{{ $user_entry[0]->email }}</td>
-                            </tr>
-                            <tr>
-                                <th>Role:</th>
-                                <td>
-                                    @if($user_entry[0]->role_id == 1)
-                                        <span class="badge bg-danger">Admin</span>
-                                    @elseif($user_entry[0]->role_id == 2)
-                                        <span class="badge bg-primary">Manager</span>
-                                    @else
-                                        <span class="badge bg-secondary">User</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div class="alert alert-warning" role="alert">
-                        <i class="bi bi-exclamation-circle"></i> 
-                        <strong>Warning:</strong> This action cannot be undone!
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
-                        <a href="{{ url('/user') }}" class="btn btn-secondary btn-lg">
-                            <i class="bi bi-x-circle"></i> No, Go Back
-                        </a>
-                        <a href="{{ url('/user/'.$user_entry[0]->id.'/destroy') }}" class="btn btn-danger btn-lg">
-                            <i class="bi bi-trash"></i> Yes, Delete User
-                        </a>
-                    </div>
+                        </thead>
+                        <tbody>
+                            @foreach ($user_list as $users)
+                                <tr>
+                                    <td>{{ $users->id }}</td>
+                                    <td>
+                                        <strong><i class="bi bi-person-circle"></i> {{ $users->username }}</strong>
+                                    </td>
+                                    <td>{{ $users->email }}</td>
+                                    <td>
+                                        @if($users->role_id == 1)
+                                            <span class="badge bg-danger">Admin</span>
+                                        @elseif($users->role_id == 2)
+                                            <span class="badge bg-primary">Manager</span>
+                                        @else
+                                            <span class="badge bg-secondary">Cashier</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($users->last_login)
+                                            {{ date('M d, Y h:i A', strtotime($users->last_login)) }}
+                                        @else
+                                            <span class="text-muted">Never</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ url('/user/'.$users->id.'/edit') }}" 
+                                               class="btn btn-sm btn-warning" 
+                                               title="Edit">
+                                                <i class="bi bi-pencil"></i> Edit
+                                            </a>
+                                            <a href="{{ url('/user/'.$users->id.'/delete') }}" 
+                                               class="btn btn-sm btn-danger" 
+                                               title="Delete">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 @endsection
