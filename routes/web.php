@@ -19,11 +19,11 @@ Route::get('/', function () {
 });
 
 //For login
-Route::get ('/login', [LoginController::class, 'showLogin'])->name('login');
-Route::post('/login', [LoginController::class,'login']);
+// Route::get ('/login', [LoginController::class, 'showLogin'])->name('login');
+// Route::post('/login', [LoginController::class,'login']);
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/logout', [CategoryController::class, 'logout']);
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/logout', [CategoryController::class, 'logout']);
 
     //For Category table
     Route::get('/categories', [CategoryController::class, 'index']);
@@ -106,5 +106,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/report/{id}/delete', [ReportController::class,'delete']);
     Route::get('/report/{id}/destroy', [ReportController::class,'destroy']);
    
-});
+//});
 
