@@ -25,6 +25,10 @@ Route::get('/', function () {
 // Route::middleware(['auth'])->group(function () {
 //     Route::get('/logout', [CategoryController::class, 'logout']);
 
+    Route::get('/dashboard', function () {
+        return view('layouts/master');
+    })->name('dashboard');
+    
     //For Category table
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/categories/add', [CategoryController::class,'add']);
@@ -106,5 +110,6 @@ Route::get('/', function () {
     Route::get('/report/{id}/delete', [ReportController::class,'delete']);
     Route::get('/report/{id}/destroy', [ReportController::class,'destroy']);
    
+    
 //});
 
