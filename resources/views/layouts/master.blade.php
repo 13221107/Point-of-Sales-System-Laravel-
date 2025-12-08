@@ -89,7 +89,7 @@
     <div class="sidebar" id="sidebar">
         <!-- Brand/Logo -->
         <div class="sidebar-brand">
-            <i class="bi bi-shop"></i> D Point of Sales System
+            <i class="bi bi-calculator"></i> D Point of Sales System
         </div>
         
         <!-- Navigation Menu -->
@@ -98,10 +98,17 @@
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
             
+            <a href="{{ url('/user') }}" class="{{ Request::is('user*') ? 'active' : '' }}">
+                <i class="bi bi-person"></i> Users
+
             <a href="{{ url('/product') }}" class="{{ Request::is('product*') ? 'active' : '' }}">
                 <i class="bi bi-box-seam"></i> Products
             </a>
             
+            <a href="{{ url('/transaction') }}" class="{{ Request::is('Transaction*') ? 'active' : '' }}">
+                <i class="bi bi-receipt"></i> Transaction
+            </a>
+
             <a href="{{ url('/category') }}" class="{{ Request::is('category*') ? 'active' : '' }}">
                 <i class="bi bi-tags"></i> Categories
             </a>
