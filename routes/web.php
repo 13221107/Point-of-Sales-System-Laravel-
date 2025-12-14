@@ -25,7 +25,7 @@ Route::get('/', function () {
 // Route::middleware(['auth'])->group(function () {
 //     Route::get('/logout', [CategoryController::class, 'logout']);
 
-    Route::get('/dashboard', function () {
+    Route::get('/dashboards', function () {
         return view('layouts/master');
     })->name('dashboard');
     
