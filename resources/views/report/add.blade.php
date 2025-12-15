@@ -28,3 +28,86 @@
     </form>
 </body>
 </html>
+
+@extends('layouts.master')
+
+@section('title', 'Add Report')  {{-- CHANGE THIS --}}
+
+@section('page-title')
+    <i class="bi bi-plus-circle"></i> Add New Report  {{-- CHANGE THIS --}}
+@endsection
+
+@section('content')
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url('/report') }}">report</a></li>  
+                    <li class="breadcrumb-item active">Add New</li>
+                </ol>
+            </nav>
+
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Add New Report</h4>  
+                </div>
+                <div class="card-body">
+                    <form action="{{ url('/report/create') }}" method="POST"> 
+                        @csrf
+                        
+                        {{-- ADD YOUR FORM FIELDS HERE --}}
+                        
+                        <!-- Example Field 1 (Text) -->
+                        <div class="mb-3">
+                            <label for="period_start" class="form-label">
+                                Period Start <span class="text-danger">*</span>
+                            </label>
+                            <input type="date" 
+                                   class="form-control" 
+                                   id="period_start" 
+                                   name="period_start" 
+                                   placeholder="0" 
+                                   required>
+                        </div>
+
+                        <!-- Example Field 2 (Number) -->
+                        <div class="mb-3">
+                            <label for="period_end" class="form-label">
+                                Field Name 2 <span class="text-danger">*</span>
+                            </label>
+                            <input type="date" 
+                                   class="form-control" 
+                                   id="period_end" 
+                                   name="period_end" 
+                                   placeholder="0" 
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="report_type" class="form-label">
+                                Report Type <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="report_type" 
+                                   name="report_type" 
+                                   placeholder="0" 
+                                   required>
+                        </div>
+
+                        
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url('/report') }}" class="btn btn-secondary">  {{-- CHANGE THIS --}}
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-save"></i> Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

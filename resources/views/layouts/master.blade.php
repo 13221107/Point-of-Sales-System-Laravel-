@@ -129,8 +129,8 @@
                 <i class="bi bi-clipboard-data"></i> Inventory
             </a>
             
-            <a href="{{ url('/reports') }}" class="{{ Request::is('reports*') ? 'active' : '' }}">
-                <i class="bi bi-file-earmark-bar-graph"></i> Reports
+            <a href="{{ url('/report') }}" class="{{ Request::is('report*') ? 'active' : '' }}">
+                <i class="bi bi-file-earmark-bar-graph"></i> Report
             </a>
             
             <hr style="border-color: #34495e;">
