@@ -21,7 +21,7 @@ Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout']);
 
-// All Authenticated Routes
+
 Route::middleware(['auth'])->group(function () {
     
     // Dashboard
@@ -31,7 +31,6 @@ Route::middleware(['auth'])->group(function () {
 
     // All roles can view products
     Route::get('/product', [ProductController::class, 'index']);
-    });
 
     // Only Inventory Staff, Manager, Admin can manage categories
     Route::middleware(['role:2,3,4'])->group(function () {
@@ -54,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Cashier, Manager, Admin can access
-    Route::middleware(['role:1,3,4'])->group(function () {
+    Route::middleware(['role: 1,3,4'])->group(function () {
         //Transaction table
         Route::get('/transaction', [TransactionController::class,'index']);
         Route::get('/transaction/add', [TransactionController::class,'add']);
