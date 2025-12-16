@@ -12,15 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('logs', function (Blueprint $table) {
-            $table->id();
-            $table->string('action_type', length: 100);
-            $table->unsignedBigInteger('entityID')->nullable();
-            $table->timestamp('timesamp')->useCurrent();
-            $table->string('entity_type', length:100);
-            $table->text('details');
-            $table->unsignedBigInteger('user_id');
-
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->id('logID');
+            $table->string('ActionType'); // e.g., 'created', 'updated', 'deleted'
+            $table->unsignedBigInteger('entityID'); // ID of the entity (product, transaction, etc.)
+            $table->timestamp('timestamp')->useCurrent();
+            $table->string('entityType'); // e.g., 'product', 'transaction', 'user'
+            $table->text('details')->nullable(); // JSON or text description of changes
+            $table->unsignedBigInteger('userID'); // FK to users table
+            
+            // Foreign key constraint
+            $table->foreign('userID')->references('id')->on('users')->onDelete('cascade');
+            
+            // Indexes for better query performance
+            $table->index('entityType');
+            $table->index('ActionType');
+            $table->index('timestamp');
         });
     }
 
@@ -30,6 +36,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('logs');
-        Schema::dropForeign('logs_user_id_foreign');
     }
 };
