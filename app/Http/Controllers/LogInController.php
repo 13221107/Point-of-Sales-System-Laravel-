@@ -4,39 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
-class LogInController extends Controller
+class LoginController extends Controller
 {
-public function login(Request $request)
-{
-    // Validate input including role
-    $credentials = $request->validate([
-        'username' => 'required', 
-        'password' => 'required',
-        'role' => 'required', // <-- Add role
-    ]);
-
-    // Attempt login
-    if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password']])) {
-        $user = Auth::user();
-
-        // Check if the selected role matches user's role
-        if ($user->role !== $credentials['role']) {
-            Auth::logout();
-            return back()->withErrors(['role' => 'Selected role does not match your account.']);
-        }
-
-        // Regenerate session
-        $request->session()->regenerate();
-
-        // Redirect to dashboard
-        return redirect()->route('dashboard');
+    public function showLogin() {
+        return view('login');
     }
-
-    // If login fails
-    return back()->withErrors([
-        'username' => 'The provided credentials do not match our records.',
-    ]);
-}
-
+    
+    public function login(Request $request) {
+        // Validate input
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+            'role_id' => 'required'
+        ]);
+        
+        // Find user with matching username and role_id
+        $user = User::where('username', $request->username)
+                    ->where('role_id', $request->role_id)
+                    ->first();
+        
+        // Check if user exists and password matches
+        if ($user && Hash::check($request->password, $user->password)) {
+            // ✅ IMPORTANT: Log the user in
+            Auth::login($user);
+            
+            // Update last login
+            $user->last_login = now();
+            $user->save();
+            
+            return redirect('/dashboard');
+        }
+        
+        // If authentication fails
+        return back()->with('error', 'Invalid username, password, or role');
+    }
+    
+    public function logout() {
+        Auth::logout();
+        return redirect('/login');
+    }
 }
