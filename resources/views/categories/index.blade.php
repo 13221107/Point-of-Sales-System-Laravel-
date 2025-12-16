@@ -1,84 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories</title>
-</head>
-<body>
-    @extends('layout.app')
+@extends('layouts.master')
 
-@section('content')
+@section('title', 'Categories Management')
 
-<style>
-    .page-title {
-        font-size: 22px;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
-
-    .table-card {
-        background: #fff;
-        padding: 20px;
-        border-radius: 6px;
-        box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
-    }
-
-    .table th {
-        background: #f5f5f5;
-        font-weight: bold;
-    }
-
-    .btn-sm {
-        padding: 3px 8px;
-        font-size: 12px;
-    }
-</style>
-
-<div class="page-title">Category List</div>
-
-<a href="{{ url('/categories/add') }}" class="btn btn-primary mb-3">
-    + Add New Category
-</a>
-
-<div class="table-card">
-
-    @if ($categoryList->isEmpty())
-        <p>No categories found.</p>
-    @else
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th style="width: 40px;">#</th>
-                    <th>Category Name</th>
-                    <th>Description</th>
-                    <th style="width: 150px;">Action</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach ($categoryList as $cat)
-                    <tr>
-                        <td>{{ $cat->id }}</td>
-                        <td>{{ $cat->category_name }}</td>
-                        <td>{{ $cat->description }}</td>
-                        <td>
-                            <a href="{{ url('/categories/' . $cat->id . '/edit') }}" 
-                               class="btn btn-warning btn-sm">Edit</a>
-
-                            <a href="{{ url('/categories/' . $cat->id . '/delete') }}" 
-                               class="btn btn-danger btn-sm">Delete</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
-
-</div>
-
+@section('page-title')
+    <i class="bi bi-tags"></i> Categories Management
 @endsection
 
+@section('content')
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <p class="text-muted mb-0">Manage your product categories</p>
+        </div>
+        <a href="{{ url('/categories/add') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New Category
+        </a>
+    </div>
 
-</body>
-</html>
+    <div class="card shadow">
+        <div class="card-header bg-white">
+            <h5 class="mb-0"><i class="bi bi-table"></i> Categories List</h5>
+        </div>
+        <div class="card-body">
+            @if ($categoryList->isEmpty())
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle"></i> No categories available.
+                    <br>
+                    <a href="{{ url('/categories/add') }}" class="btn btn-primary mt-2">
+                        Add Your First Category
+                    </a>
+                </div>
+            @else
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Category Name</th>
+                                <th>Description</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($categoryList as $cat)
+                                <tr>
+                                    <td>{{ $cat->id }}</td>
+                                    <td><strong>{{ $cat->category_name }}</strong></td>
+                                    <td>{{ $cat->description ?? 'N/A' }}</td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a href="{{ url('/categories/'.$cat->id.'/edit') }}" 
+                                               class="btn btn-sm btn-warning">
+                                                <i class="bi bi-pencil"></i> Edit
+                                            </a>
+                                            <a href="{{ url('/categories/'.$cat->id.'/delete') }}" 
+                                               class="btn btn-sm btn-danger">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </div>
+    </div>
+@endsection
