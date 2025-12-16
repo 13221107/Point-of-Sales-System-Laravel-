@@ -17,9 +17,15 @@ class ProductController extends Controller
         ];
         return view('/product/index', $data);
     }
+
     public function add(){
-        return view('/product/add');
+    // Cashiers cannot add products
+    if(session('role_id') == 1){
+        return redirect('/product')->with('error', 'Access denied. Cashiers cannot add products.');
     }
+    return view('/product/add');
+    }
+
     public function create(Request $request){
         $product_name = $request->input('product_name');
         $price = $request->input('price');
@@ -51,11 +57,14 @@ class ProductController extends Controller
     }
 
     public function delete($id){
+        // Cashiers cannot delete products
+        if(session('role_id') == 1){
+            return redirect('/product')->with('error', 'Access denied. Cashiers cannot delete products.');
+        }
+        
         $model = new ProductModel();
         $dbResult = $model->getSpecificProduct($id);
-        $data = [
-            'product_entry'=> $dbResult,
-        ];
+        $data = ['product_entry'=> $dbResult];
         return view('product/delete', $data);
     }
 

@@ -10,9 +10,8 @@ use App\Models\User;
 class LoginController extends Controller
 {
     public function showLogin() {
-        return view('login');
+        return view('login/showlogin');
     }
-    
     public function login(Request $request) {
         // Validate input
         $request->validate([
@@ -28,8 +27,11 @@ class LoginController extends Controller
         
         // Check if user exists and password matches
         if ($user && Hash::check($request->password, $user->password)) {
-            // ✅ IMPORTANT: Log the user in
+            // ✅ Log the user in
             Auth::login($user);
+            
+            // ✅ ADD THIS LINE: Store role_id in session
+            session(['role_id' => $user->role_id]);
             
             // Update last login
             $user->last_login = now();
@@ -43,7 +45,8 @@ class LoginController extends Controller
     }
     
     public function logout() {
-        Auth::logout();
-        return redirect('/login');
-    }
+    session()->forget('role_id'); 
+    Auth::logout();
+    return redirect('/login');
+}
 }
