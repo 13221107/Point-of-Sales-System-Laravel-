@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReceiptController;
@@ -129,6 +130,16 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/role/{id}/update', [RoleController::class,'update']);
         Route::get('/role/{id}/delete', [RoleController::class,'delete']);
         Route::get('/role/{id}/destroy', [RoleController::class,'destroy']);
+
+        //log table
+        Route::get('/log', [LogController::class,'index']);
+        Route::get('/log/add', [LogController::class,'add']);
+        Route::post('/log/create', [LogController::class,'create']);
+        Route::get('/log/{id}/edit', [LogController::class,'edit']);
+        Route::post('/log/{id}/update', [LogController::class,'update']);
+        Route::get('/log/{id}/delete', [LogController::class,'delete']);
+        Route::get('/log/{id}/destroy', [LogController::class,'destroy']);
     });
     
-});
+});     
+    
