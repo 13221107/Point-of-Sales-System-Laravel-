@@ -1,46 +1,3 @@
-{{-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Transaction</title>
-</head>
-<body>
-    @if (empty($transaction_list))
-        There are no data in the transaction table
-    @else
-        <table>
-                <thead>
-                    <th>Transaction Date</th>
-                    <th>Total Amount</th>
-                    <th>Status</th>
-                    <th>User ID</th>
-                    <th>Receipt ID</th>
-                    <th>Actions</th>
-                </thead>
-                <tbody>
-                    @foreach ( $transaction_list as $transactions)
-                        <tr>
-                            <td>{{ $transactions->transaction_date }}</td>
-                            <td>{{ $transactions->total_amount }}</td>
-                            <td>{{ $transactions->status }}</td>
-                            <td>{{  $transactions->user_id }}</td>
-                            <td>{{ $transactions->receipt_id }}</td>
-                            <td>
-                                <a href="{{ url('transaction/'.$transactions->id.'/edit') }}">Edit</a>
-                                <a href="{{ url('transaction/'.$transactions->id.'/delete') }}">Delete</a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-        </table>
-    @endif
-    <br>
-    <a href="{{ url('/transaction/add') }}">Add new Transaction</a>
-</body>
-</html> --}}
-
 @extends('layouts.master')
 
 @section('title', 'Transactions Management')
@@ -50,6 +7,18 @@
 @endsection
 
 @section('content')
+    <!-- Role Badge Display -->
+    <div class="alert alert-info mb-3">
+        <strong>Your Access Level:</strong>
+        @if(session('role_id') == 4)
+            <span class="badge bg-danger">👑 Admin - Full Access</span>
+        @elseif(session('role_id') == 3)
+            <span class="badge bg-primary">💼 Manager - Full Access</span>
+        @else
+            <span class="badge bg-warning text-dark">💰 Cashier - Create & View Only</span>
+        @endif
+    </div>
+
     <!-- Add Button -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -68,10 +37,10 @@
         <div class="card-body">
             @if (empty($transaction_list) || count($transaction_list) == 0)
                 <div class="alert alert-info text-center" role="alert">
-                    <i class="bi bi-info-circle"></i> There are no transactions in the database yet.
-                    <br>
-                    <a href="{{ url('/transaction/add') }}" class="btn btn-primary mt-2">
-                        Add Your First Transaction
+                    <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                    <p class="mt-2 mb-3">There are no transactions in the database yet.</p>
+                    <a href="{{ url('/transaction/add') }}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Add Your First Transaction
                     </a>
                 </div>
             @else
@@ -79,29 +48,35 @@
                     <table class="table table-striped table-hover">
                         <thead class="table-dark">
                             <tr>
-                                <th>ID</th>
+                                <th class="text-center">#</th>
                                 <th>Date</th>
-                                <th>Total Amount</th>
-                                <th>Status</th>
-                                <th>User ID</th>
-                                <th>Receipt ID</th>
+                                <th class="text-end">Total Amount</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">User ID</th>
+                                <th class="text-center">Receipt ID</th>
                                 <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($transaction_list as $transactions)
                                 <tr>
-                                    <td>{{ $transactions->id }}</td>
+                                    <td class="text-center">
+                                        <strong class="text-primary">{{ $transactions->id }}</strong>
+                                    </td>
                                     <td>
-                                        <i class="bi bi-calendar3"></i> 
+                                        <i class="bi bi-calendar-event"></i> 
                                         {{ date('M d, Y', strtotime($transactions->transaction_date)) }}
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="bi bi-clock"></i> {{ date('h:i A', strtotime($transactions->transaction_date)) }}
+                                        </small>
                                     </td>
-                                    <td>
-                                        <span class="badge bg-success fs-6">
+                                    <td class="text-end">
+                                        <strong class="text-success fs-6">
                                             ₱{{ number_format($transactions->total_amount, 2) }}
-                                        </span>
+                                        </strong>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @if(strtolower($transactions->status) == 'completed' || strtolower($transactions->status) == 'paid')
                                             <span class="badge bg-success">
                                                 <i class="bi bi-check-circle"></i> {{ ucfirst($transactions->status) }}
@@ -118,30 +93,61 @@
                                             <span class="badge bg-secondary">{{ ucfirst($transactions->status) }}</span>
                                         @endif
                                     </td>
-                                    <td>
-                                        <span class="badge bg-info">User #{{ $transactions->user_id }}</span>
+                                    <td class="text-center">
+                                        <span class="badge bg-info">
+                                            <i class="bi bi-person"></i> User #{{ $transactions->user_id }}
+                                        </span>
                                     </td>
-                                    <td>
-                                        <span class="badge bg-secondary">Receipt #{{ $transactions->receipt_id }}</span>
+                                    <td class="text-center">
+                                        <span class="badge bg-secondary">
+                                            <i class="bi bi-receipt"></i> Receipt #{{ $transactions->receipt_id }}
+                                        </span>
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
-                                            <a href="{{ url('transaction/'.$transactions->id.'/edit') }}" 
-                                               class="btn btn-sm btn-warning" 
-                                               title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <a href="{{ url('transaction/'.$transactions->id.'/delete') }}" 
-                                               class="btn btn-sm btn-danger" 
-                                               title="Delete">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
+                                            @if(in_array(session('role_id'), [3, 4]))
+                                                <!-- Manager & Admin can edit/delete -->
+                                                <a href="{{ url('transaction/'.$transactions->id.'/edit') }}" 
+                                                   class="btn btn-sm btn-warning"
+                                                   title="Edit Transaction">
+                                                    <i class="bi bi-pencil"></i> Edit
+                                                </a>
+                                                <a href="{{ url('transaction/'.$transactions->id.'/delete') }}" 
+                                                   class="btn btn-sm btn-danger"
+                                                   title="Delete Transaction"
+                                                   onclick="return confirm('Are you sure you want to delete transaction #{{ $transactions->id }}?')">
+                                                    <i class="bi bi-trash"></i> Delete
+                                                </a>
+                                            @else
+                                                <!-- Cashier can only view -->
+                                                <button class="btn btn-sm btn-info" 
+                                                        disabled 
+                                                        title="View Only - Cashier Access">
+                                                    <i class="bi bi-eye"></i> View Only
+                                                </button>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Transaction Summary -->
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle"></i> 
+                            Total Transactions: <strong>{{ count($transaction_list) }}</strong>
+                        </small>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <small class="text-muted">
+                            <i class="bi bi-cash-stack"></i> 
+                            Total Amount: <strong class="text-success">₱{{ number_format($transaction_list->sum('total_amount'), 2) }}</strong>
+                        </small>
+                    </div>
                 </div>
             @endif
         </div>

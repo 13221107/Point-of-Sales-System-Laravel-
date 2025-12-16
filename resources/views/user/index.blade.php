@@ -1,39 +1,3 @@
-{{-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User</title>
-</head>
-<body>
-    @if (empty($user_list))
-        There are no data in user table
-    @else
-        <table>
-            <thead>
-                <th>Username</th>
-                <th>Email</th>             
-                <th>Role ID</th>
-                <th>Action</th>           
-            </thead>
-            <tbody>
-                @foreach ($user_list as $users)
-                    <tr>
-                        <td>{{ $users->username }}</td>
-                        <td>{{ $users->email }}</td>
-                        <td>{{ $users->role_id }}</td>
-                        <td>
-                             <a href="{{ url('/user/'.$users->id.'/edit') }}">Edit</a>
-                            <a href="{{ url('/user/'.$users->id.'/delete') }}">Delete</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
-    <a href="{{ url('/user/add') }}">Add New User</a>
-</body>
-</html> --}}
 @extends('layouts.master')
 
 @section('title', 'Users Management')
@@ -43,14 +7,32 @@
 @endsection
 
 @section('content')
+    <!-- Role Badge Display -->
+    <div class="alert alert-info mb-3">
+        <strong>Your Access Level:</strong>
+        @if(session('role_id') == 4)
+            <span class="badge bg-danger">👑 Admin - Full Access</span>
+        @elseif(session('role_id') == 3)
+            <span class="badge bg-primary">💼 Manager - View Only</span>
+        @else
+            <span class="badge bg-secondary">No Access</span>
+        @endif
+    </div>
+
     <!-- Add Button -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <p class="text-muted mb-0">Manage system users and access</p>
         </div>
-        <a href="{{ url('/user/add') }}" class="btn btn-success">
-            <i class="bi bi-plus-circle"></i> Add New User
-        </a>
+        @if(session('role_id') == 4)
+            <a href="{{ url('/user/add') }}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Add New User
+            </a>
+        @else
+            <span class="badge bg-warning text-dark fs-6">
+                <i class="bi bi-info-circle"></i> View Only Mode (Manager)
+            </span>
+        @endif
     </div>
 
     <!-- Users Table Card -->
@@ -61,18 +43,20 @@
         <div class="card-body">
             @if (empty($user_list) || count($user_list) == 0)
                 <div class="alert alert-info text-center" role="alert">
-                    <i class="bi bi-info-circle"></i> There are no users in the database yet.
-                    <br>
-                    <a href="{{ url('/user/add') }}" class="btn btn-primary mt-2">
-                        Add Your First User
-                    </a>
+                    <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                    <p class="mt-2 mb-3">There are no users in the database yet.</p>
+                    @if(session('role_id') == 4)
+                        <a href="{{ url('/user/add') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Add Your First User
+                        </a>
+                    @endif
                 </div>
             @else
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead class="table-dark">
                             <tr>
-                                <th>ID</th>
+                                <th class="text-center">#</th>
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Role</th>
@@ -83,45 +67,69 @@
                         <tbody>
                             @foreach ($user_list as $users)
                                 <tr>
-                                    <td>{{ $users->id }}</td>
+                                    <td class="text-center">{{ $users->id }}</td>
                                     <td>
                                         <strong><i class="bi bi-person-circle"></i> {{ $users->username }}</strong>
                                     </td>
-                                    <td>{{ $users->email }}</td>
                                     <td>
-                                        @if($users->role_id == 1)
-                                            <span class="badge bg-danger">Admin</span>
+                                        <i class="bi bi-envelope"></i> {{ $users->email }}
+                                    </td>
+                                    <td>
+                                        @if($users->role_id == 4)
+                                            <span class="badge bg-danger">👑 Admin</span>
+                                        @elseif($users->role_id == 3)
+                                            <span class="badge bg-primary">💼 Manager</span>
                                         @elseif($users->role_id == 2)
-                                            <span class="badge bg-primary">Manager</span>
+                                            <span class="badge bg-success">📦 Inventory Staff</span>
                                         @else
-                                            <span class="badge bg-secondary">Cashier</span>
+                                            <span class="badge bg-warning text-dark">💰 Cashier</span>
                                         @endif
                                     </td>
                                     <td>
                                         @if($users->last_login)
+                                            <i class="bi bi-clock-history"></i> 
                                             {{ date('M d, Y h:i A', strtotime($users->last_login)) }}
                                         @else
-                                            <span class="text-muted">Never</span>
+                                            <span class="text-muted">
+                                                <i class="bi bi-x-circle"></i> Never logged in
+                                            </span>
                                         @endif
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
-                                            <a href="{{ url('/user/'.$users->id.'/edit') }}" 
-                                               class="btn btn-sm btn-warning" 
-                                               title="Edit">
-                                                <i class="bi bi-pencil"></i> Edit
-                                            </a>
-                                            <a href="{{ url('/user/'.$users->id.'/delete') }}" 
-                                               class="btn btn-sm btn-danger" 
-                                               title="Delete">
-                                                <i class="bi bi-trash"></i> Delete
-                                            </a>
+                                            @if(session('role_id') == 4)
+                                                <!-- Admin can edit/delete -->
+                                                <a href="{{ url('/user/'.$users->id.'/edit') }}" 
+                                                   class="btn btn-sm btn-warning" 
+                                                   title="Edit User">
+                                                    <i class="bi bi-pencil"></i> Edit
+                                                </a>
+                                                <a href="{{ url('/user/'.$users->id.'/delete') }}" 
+                                                   class="btn btn-sm btn-danger" 
+                                                   title="Delete User"
+                                                   onclick="return confirm('Are you sure you want to delete {{ $users->username }}?')">
+                                                    <i class="bi bi-trash"></i> Delete
+                                                </a>
+                                            @else
+                                                <!-- Manager can only view -->
+                                                <button class="btn btn-sm btn-info" disabled title="View Only - Manager Access">
+                                                    <i class="bi bi-eye"></i> View Only
+                                                </button>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+
+                <!-- User Count -->
+                <div class="mt-3 text-muted">
+                    <small>
+                        <i class="bi bi-info-circle"></i> 
+                        Total Users: <strong>{{ count($user_list) }}</strong>
+                    </small>
                 </div>
             @endif
         </div>
