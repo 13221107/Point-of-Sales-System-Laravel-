@@ -18,6 +18,13 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->integer('stocklevel')->default(0);
             $table->boolean('is_test_record')->default(false);
+            $table->unsignedBigInteger('category_id')->nullable()->after('id');
+            
+            $table->foreign('category_id')
+                  ->references('id')
+                  ->on('categories')
+                  ->onDelete('set null');
+
         });
     }
 
@@ -27,5 +34,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('products');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropForeign(['category_id']);
+            $table->dropColumn('category_id');
+        });
     }
 };
