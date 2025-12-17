@@ -12,7 +12,7 @@ class ReportSeeder extends Seeder
      */
     public function run(): void
     {
-        $reports = [
+        DB::table('reports')->insert([
             [
                 'period_start' => now()->startOfMonth()->format('Y-m-d'),
                 'period_end' => now()->endOfMonth()->format('Y-m-d'),
@@ -93,7 +93,6 @@ class ReportSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ];
-
+        ]);
     }
 }

@@ -12,8 +12,7 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $categories = [
-            [
+        DB::table('categories')->insert([[
                 'category_name' => 'Electronics',
                 'description' => 'Electronic devices, gadgets, and accessories including smartphones, laptops, and audio equipment',
                 'created_at' => now(),
@@ -43,7 +42,9 @@ class CategorySeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ];
+        ]);
+            
+        
 
     }
 }

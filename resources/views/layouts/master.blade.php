@@ -89,7 +89,7 @@
     <div class="sidebar" id="sidebar">
         <!-- Brand/Logo -->
         <div class="sidebar-brand">
-            <i class="bi bi-shop"></i> Inventory System
+            <i class="bi bi-calculator"></i> Point of Sales System
         </div>
         
         <!-- Navigation Menu -->
@@ -159,6 +159,12 @@
             @if(auth()->check() && auth()->user()->role_id == 4)
             <a href="{{ url('/role') }}" class="{{ Request::is('role*') ? 'active' : '' }}">
                 <i class="bi bi-shield-check"></i> Roles
+            </a>
+            @endif
+
+            @if(auth()->check() && auth()->user()->role_id == 4)
+            <a href="{{ url('/log') }}" class="{{ Request::is('log*') ? 'active' : '' }}">
+                <i class="bi bi-shield-check"></i> Logs
             </a>
             @endif
             

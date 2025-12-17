@@ -13,8 +13,7 @@ class ReceiptSeeder extends Seeder
      */
     public function run(): void
     {
-        $receipts = [
-            [
+        DB::table('receipts')->insert([[
                 'date' => now()->subDays(25)->format('Y-m-d'),
                 'printed_by_user_id' => 1,
                 'created_at' => now(),
@@ -74,7 +73,7 @@ class ReceiptSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ];
+        ]);
 
     }
 }

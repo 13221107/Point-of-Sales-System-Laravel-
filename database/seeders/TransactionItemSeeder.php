@@ -12,8 +12,7 @@ class TransactionItemSeeder extends Seeder
      */
     public function run(): void
     {
-        // Predefined transaction items with calculated subtotals
-        $transactionItems = [
+        DB::table('transaction_items')->insert([
             // Transaction #1 (3 items)
             [
                 'quantity' => 1,
@@ -303,6 +302,6 @@ class TransactionItemSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ];
+        ]);
     }
 }

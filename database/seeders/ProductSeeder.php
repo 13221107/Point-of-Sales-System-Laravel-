@@ -12,7 +12,7 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        $products = [
+        DB::table('products')->insert([
             // Electronics (category_id: 1)
             ['category_id' => 1, 'product_name' => 'Wireless Bluetooth Headphones', 'price' => 2500, 'description' => 'High-quality wireless headphones with noise cancellation and 20-hour battery life', 'stocklevel' => 50, 'is_test_record' => false],
             ['category_id' => 1, 'product_name' => 'Smart Watch Pro', 'price' => 8500, 'description' => 'Feature-rich smartwatch with fitness tracking, heart rate monitor, and GPS', 'stocklevel' => 30, 'is_test_record' => false],
@@ -32,7 +32,7 @@ class ProductSeeder extends Seeder
             // Sports & Fitness (category_id: 5)
             ['category_id' => 5, 'product_name' => 'Yoga Mat', 'price' => 890, 'description' => 'Non-slip yoga mat with carrying strap, 6mm thickness', 'stocklevel' => 70, 'is_test_record' => false],
             ['category_id' => 5, 'product_name' => 'Water Bottle 1L', 'price' => 450, 'description' => 'Insulated stainless steel water bottle keeps drinks cold for 24 hours', 'stocklevel' => 100, 'is_test_record' => false],
-        ];
-
+        ]);
+            
     }
 }
