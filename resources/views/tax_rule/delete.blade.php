@@ -1,13 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Tax Rule</title>
-</head>
-<body>
-      Are you sure you want to delete tax rule " <b>{{ $tax_rule_entry[0]->id }}</b>"?
-    <a href="{{ url('/tax_rule/'.$tax_rule_entry[0]->id.'/destroy') }}">Yes</a>
-    <a href="{{ url('/tax_rule') }}">No</a>
-</body>
-</html>
+@extends('layouts.master')
+
+@section('title', 'Delete Tax Rule')
+
+@section('page-title')
+    <i class="bi bi-trash"></i> Delete Tax Rule
+@endsection
+
+@section('content')
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url('/tax_rule') }}">Tax Rules</a></li>
+                    <li class="breadcrumb-item active">Delete</li>
+                </ol>
+            </nav>
+
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Confirm Deletion</h4>
+                </div>
+                <div class="card-body text-center">
+                    <i class="bi bi-trash text-danger" style="font-size: 4rem;"></i>
+                    <h5 class="mt-3">Are you sure you want to delete this tax rule?</h5>
+                    
+                    <div class="alert alert-light mt-4 text-start">
+                        <table class="table table-borderless mb-0">
+                            <tr>
+                                <th width="40%">ID:</th>
+                                <td><strong>{{ $tax_rule_entry[0]->id }}</strong></td>
+                            </tr>
+                            <tr>
+                                <th>Tax Name:</th>
+                                <td><strong>{{ $tax_rule_entry[0]->tax_name }}</strong></td>
+                            </tr>
+                            <tr>
+                                <th>Tax Rate:</th>
+                                <td>
+                                    <span class="badge bg-success" style="font-size: 1rem;">
+                                        {{ number_format($tax_rule_entry[0]->rate, 2) }}%
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-circle"></i> 
+                        <strong>Warning:</strong> This action cannot be undone! Deleting this tax rule may affect existing transactions.
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                        <a href="{{ url('/tax_rule') }}" class="btn btn-secondary btn-lg">
+                            <i class="bi bi-x-circle"></i> No, Go Back
+                        </a>
+                        <a href="{{ url('/tax_rule/'.$tax_rule_entry[0]->id.'/destroy') }}" 
+                           class="btn btn-danger btn-lg">
+                            <i class="bi bi-trash"></i> Yes, Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
