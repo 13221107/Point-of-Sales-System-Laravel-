@@ -101,7 +101,7 @@
             <div class="login-card">
                 <!-- Header -->
                 <div class="login-header">
-                    <i class="bi bi-shop" style="font-size: 3rem;"></i>
+                    <i class="bi bi-calculator" style="font-size: 3rem;"></i>
                     <h2 class="mt-3 mb-0">Point of Sales System</h2>
                     <p class="mb-0">Sign in to your account</p>
                 </div>
