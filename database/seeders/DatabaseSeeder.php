@@ -21,9 +21,6 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class, 
             ProductSeeder::class,
             ReportSeeder::class,
-            ReceiptSeeder::class,
-            TransactionSeeder::class,
-            TransactionItemSeeder::class,
         ]);
     }
 }
