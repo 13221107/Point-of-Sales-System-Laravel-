@@ -13,8 +13,7 @@ class TransactionSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('transactions
-        ')->insert([
+        DB::table('transactions')->insert([
             [
                 'transaction_date' => now()->subDays(25)->format('Y-m-d'),
                 'total_amount' => 4,040.00,
