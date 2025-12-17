@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CategorySeeder extends Seeder
 {
@@ -14,67 +13,41 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('categories')->insert([
+        $categories = [
             [
-                'category_name' => 'Beverages',
-                'description' => 'Includes soft drinks, juices, coffee, and tea products.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'category_name' => 'Electronics',
+                'description' => 'Electronic devices, gadgets, and accessories including smartphones, laptops, and audio equipment',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'category_name' => 'Snacks',
-                'description' => 'Covers chips, biscuits, candies, and other light foods.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'category_name' => 'Clothing',
+                'description' => 'Apparel, fashion items, and accessories for men, women, and children',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'category_name' => 'Dairy Products',
-                'description' => 'Milk, cheese, yogurt, and other dairy-based products.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'category_name' => 'Food & Beverages',
+                'description' => 'Food products, snacks, beverages, and grocery items',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'category_name' => 'Personal Care',
-                'description' => 'Shampoos, soaps, toothpaste, and hygiene essentials.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'category_name' => 'Home & Garden',
+                'description' => 'Home decor, furniture, kitchen items, and gardening supplies',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'category_name' => 'Household Supplies',
-                'description' => 'Detergents, cleaning materials, and other home supplies.',
-                'created_at' => now(),
-                'updated_at' => now(),
+                'category_name' => 'Sports & Fitness',
+                'description' => 'Sports equipment, fitness gear, and outdoor recreational items',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
-            [
-                'category_name' => 'Frozen Goods',
-                'description' => 'Frozen meats, seafood, vegetables, and ready-to-cook meals.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'category_name' => 'Bakery Items',
-                'description' => 'Cakes, bread, pastries, and other baked goods.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'category_name' => 'Health & Wellness',
-                'description' => 'Vitamins, supplements, and other health-related products.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'category_name' => 'Canned Goods',
-                'description' => 'Canned fruits, vegetables, meats, and soups.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'category_Name' => 'Stationery',
-                'description' => 'Office and school supplies like pens, paper, and notebooks.',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        ];
+
+        DB::table('categories')->insert($categories);
+        
+        $this->command->info('✅ Successfully seeded ' . count($categories) . ' categories!');
     }
 }
