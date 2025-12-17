@@ -94,11 +94,6 @@
         
         <!-- Navigation Menu -->
         <nav class="mt-3">
-            <!-- Dashboard - All Roles -->
-            <a href="{{ url('/dashboard') }}" class="{{ Request::is('dashboard') ? 'active' : '' }}">
-                <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
-            
             <!-- Products - All can view -->
             <a href="{{ url('/product') }}" class="{{ Request::is('product*') ? 'active' : '' }}">
                 <i class="bi bi-box-seam"></i> Products
